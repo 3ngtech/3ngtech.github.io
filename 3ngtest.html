@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encuesta de Prompts</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Encuesta sobre prompts</h1>
+    <div id="user-form">
+      <label>Nombre:</label>
+      <input type="text" id="name" required />
+      <label>Email:</label>
+      <input type="email" id="email" required />
+      <button onclick="startQuiz()">Comenzar</button>
+    </div>
+
+    <div id="quiz" style="display:none;"></div>
+    <div id="result" style="display:none;"></div>
+  </div>
+
+  <script src="quiz.js"></script>
+</body>
+</html>
