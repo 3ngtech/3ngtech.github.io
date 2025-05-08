@@ -1,47 +1,164 @@
+/* style.css */
+/* 1. Variables de branding */
+:root {
+  --lt-start: #e02619; 
+  --lt-end:   #8a1a1a;  
+  --font-base: 'Roboto Mono', monospace;
+  --color-bg: #e02619;
+  --color-text: #ffffff;
+  --color-accent: #000000;
+  --color-card-bg: rgba(255,255,255,0.2); 
+  --tap-size: 48px;
+  --slide-duration: 0.3s;
+}
+
+/* Cualquier .container sin contenido no se mostrará */
+.container:empty {
+  display: none;
+}
+
+/* 2. Reset y base */
+* { box-sizing: border-box; margin:0; padding:0; }
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 600px;
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  input[type="text"],
-  input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    box-sizing: border-box;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .question {
-    margin-top: 20px;
-  }
-  
-  .options label {
-    display: block;
-    margin: 5px 0;
-  }
-  
+  font-family: var(--font-base);
+  color: var(--color-text);
+  /* Degradé diagonal 135° del rojo oscuro al negro */
+  background: linear-gradient(135deg,
+    var(--lt-start) 0%,
+    var(--lt-end)   100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* 3. Contenedores */
+.container {
+  background: var(--color-card-bg);
+  border-radius:16px;
+  box-shadow:0 0 20px rgba(0,0,0,0.3);
+  padding:2rem;
+  width:100%;
+  max-width:600px;
+  overflow:hidden;
+}
+
+/* 4. Logo */
+.logo {
+  display:block;
+  margin:0 auto 1rem;
+  max-width:150px;
+}
+
+/* 5. Tipografía y formulario */
+h1, h2 {
+  text-align:center;
+  margin-bottom:1rem;
+  font-weight:700;
+}
+fieldset {
+  border: none;
+  margin-bottom: 1.5rem;
+}
+label {
+  display: block;
+  margin: 0.5rem 0;
+}
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.4);
+  color: var(--color-text);
+  font-size: 1rem;
+}
+
+/* 6. Botones y opciones */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  min-height: var(--tap-size);
+  transition: transform 0.1s;
+}
+button:active {
+  transform: scale(0.97);
+}
+
+/* Opciones como etiquetas clicables */
+.options input[type="radio"] {
+  display: none;
+}
+.options label {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.4);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  min-height: var(--tap-size);
+}
+.options input[type="radio"]:checked + label {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* 7. Progreso */
+#progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 3px;
+  margin: 1rem 0;
+  display: none;
+  overflow: hidden;
+}
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--color-accent);
+  transition: width var(--slide-duration);
+}
+
+/* 8. Animación slide-fade */
+@keyframes slide-fade {
+  from { opacity:0; transform:translateX(20px); }
+  to   { opacity:1; transform:translateX(0);   }
+}
+.slide-in {
+  animation: slide-fade var(--slide-duration) ease-out;
+}
+
+/* 9. Responsive */
+@media (max-width: 600px) {
+  .container { padding:1.5rem; }
+  h1, h2 { font-size:1.25rem; }
+}
+
+.linktree {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.linktree a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.linktree a:hover {
+  text-decoration: underline;
+}

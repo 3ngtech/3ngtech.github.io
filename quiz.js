@@ -36,82 +36,128 @@ const quizData = [
   let userName = "";
   let userEmail = "";
   
-  function startQuiz() {
-    userName = document.getElementById("name").value.trim();
-    userEmail = document.getElementById("email").value.trim();
-    if (!userName || !userEmail) {
-      alert("Por favor completa tu nombre y correo.");
-      return;
-    }
+  const startBtn  = document.getElementById("start-btn");
+  const quizDiv   = document.getElementById("quiz");
+  const resultDiv = document.getElementById("result");
+  const progress  = document.getElementById("progress");
+  const bar       = document.getElementById("progress-bar");
 
-    document.getElementById("user-form").style.display = "none";
-    document.getElementById("quiz").style.display = "block";
+startBtn.addEventListener("click", startQuiz);
+
+function startQuiz() {
+  userName  = document.getElementById("name").value.trim();
+  userEmail = document.getElementById("email").value.trim();
+  if (!userName || !userEmail) {
+    alert("Por favor completa tu nombre y correo.");
+    return;
+  }
+  document.getElementById("user-form").style.display = "none";
+  progress.style.display = "block";
+  updateProgress();
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = quizData[currentQuestion];
+  let html = `
+    <!-- logo arriba de cada pregunta -->
+    <img src="logo.svg" alt="Logo 3NG" class="logo" />
+    <div class="question slide-in">
+      <h2>${q.question}</h2>
+      <div class="options">
+  `;
+  q.options.forEach((opt, idx) => {
+    html += `
+      <input type="radio" id="opt${idx}" name="q${currentQuestion}" value="${idx}" />
+      <label for="opt${idx}">${opt}</label>
+    `;
+  });
+  html += `
+      </div>
+      <button onclick="submitAnswer()">Siguiente</button>
+    </div>
+  `;
+  quizDiv.innerHTML = html;
+
+
+  setTimeout(() => {
+    const qEl = quizDiv.querySelector(".slide-in");
+    if (qEl) qEl.classList.remove("slide-in");
+  }, parseFloat(getComputedStyle(document.documentElement)
+              .getPropertyValue('--slide-duration')) * 1000);
+
+
+  document.querySelector("main").scrollIntoView({ behavior: "smooth" });
+}
+
+function submitAnswer() {
+  const radios = document.getElementsByName(`q${currentQuestion}`);
+  const sel = Array.from(radios).find(r => r.checked);
+  if (!sel) {
+    alert("Selecciona una opción antes de continuar.");
+    return;
+  }
+  if (parseInt(sel.value) === quizData[currentQuestion].answer) {
+    correctAnswers++;
+  }
+  currentQuestion++;
+  if (currentQuestion < quizData.length) {
+    updateProgress();
     showQuestion();
+  } else {
+    showResult();
   }
-  
-  function showQuestion() {
-    const quizDiv = document.getElementById("quiz");
-    const q = quizData[currentQuestion];
-    let html = `<div class="question"><h2>${q.question}</h2><div class="options">`;
-    q.options.forEach((opt, idx) => {
-      html += `<label><input type="radio" name="q${currentQuestion}" value="${idx}" /> ${opt}</label>`;
-    });
-    html += `</div><button onclick="submitAnswer()">Siguiente</button></div>`;
-    quizDiv.innerHTML = html;
-  }
-  
-  function submitAnswer() {
-    const radios = document.getElementsByName(`q${currentQuestion}`);
-    let selected = null;
-    for (const r of radios) {
-      if (r.checked) selected = parseInt(r.value);
-    }
-    if (selected === null) {
-      alert("Selecciona una opción antes de continuar.");
-      return;
-    }
-    if (selected === quizData[currentQuestion].answer) correctAnswers++;
-  
-    currentQuestion++;
-    if (currentQuestion < quizData.length) {
-      showQuestion();
-    } else {
-      showResult();
-    }
-  }
-  
-  function showResult() {
-    document.getElementById("quiz").style.display = "none";
-    const resultDiv = document.getElementById("result");
-    let message = `<h2>¡Gracias por participar, ${userName}!</h2>`;
-    message += `<p>Respuestas correctas: ${correctAnswers} de ${quizData.length}</p>`;
-    if (correctAnswers >= 4) {
-      const ticket = Math.floor(Math.random() * 100);
-      message += `<p>¡Felicidades! Ganaste un número para el sorteo de 3NG: <strong>${ticket}</strong></p>`;
-    } else {
-      message += `<p>No alcanzaste el mínimo para el sorteo :( ¡Intenta de nuevo!</p>`;
-    }
-    resultDiv.innerHTML = message;
-    resultDiv.style.display = "block";
-    enviarDatosAGoogleForms(userName, userEmail);
-  }  
+}
 
-  function enviarDatosAGoogleForms(nombre, email) {
-    const formData = new FormData();
-    formData.append("entry.1928113339", nombre);
-    formData.append("entry.1167454035", email);
-  
-    fetch("https://docs.google.com/forms/d/e/1FAIpQLSdYtH5gcZQ-w3Hdp2_Dz7OLYW6kAeEZktNoNM6vfsdhEMI-Ug/formResponse", {
-      method: "POST",
-      mode: "no-cors",
-      body: formData,
-    })
-    .then(() => {
-      console.log("Datos enviados a Google Forms");
-    })
-    .catch((err) => {
-      console.error("Error al enviar:", err);
-    });
+function updateProgress() {
+  const pct = (currentQuestion / quizData.length) * 100;
+  bar.style.width = pct + "%";
+}
+
+function showResult() {
+
+  progress.style.display = "none";
+  quizDiv.style.display = "none";
+
+
+  let html = `
+    <img src="logo.svg" alt="Logo 3NG" class="logo" />
+    <div class="result-content">
+      <h2>¡Gracias por participar, ${userName}!</h2>
+      <p>Respuestas correctas: ${correctAnswers} de ${quizData.length}</p>
+  `;
+
+  if (correctAnswers >= 4) {
+    const ticket = Math.floor(Math.random() * 100);
+    html += `<p>¡Felicidades! Ganaste un número para el sorteo: <strong>${ticket}</strong></p>`;
+  } else {
+    html += `<p>No alcanzaste el mínimo para el sorteo :( ¡Intenta de nuevo!</p>`;
   }
-  
-  
+
+
+  html += `
+    </div>
+    <div class="linktree">
+      <p>¡Seguinos en nuestras redes para no perderte novedades!</p>
+      <a href="https://linktr.ee/3ng.tech" target="_blank" rel="noopener">3NG Tech - Intelligent Solutions</a>
+    </div>
+  `;
+
+
+  resultDiv.innerHTML = html;
+  resultDiv.style.display = "block";
+
+
+  enviarDatosAGoogleForms(userName, userEmail);
+}
+
+function enviarDatosAGoogleForms(nombre, email) {
+  const formData = new FormData();
+  formData.append("entry.1928113339", nombre);
+  formData.append("entry.1167454035", email);
+  fetch("https://docs.google.com/forms/d/e/1FAIpQLSdYtH5gcZQ-w3Hdp2_Dz7OLYW6kAeEZktNoNM6vfsdhEMI-Ug/formResponse", {
+    method: "POST",
+    mode: "no-cors",
+    body: formData,
+  });
+}

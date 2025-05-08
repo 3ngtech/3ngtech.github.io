@@ -3,24 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Encuesta de Prompts</title>
+  <title>Encuesta 3NG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Encuesta sobre prompts - Demo</h1>
-    <div id="user-form">
-      <label>Nombre:</label>
-      <input type="text" id="name" required />
-      <label>Email:</label>
-      <input type="email" id="email" required />
-      <button onclick="startQuiz()">Comenzar</button>
-    </div>
+  <main>
+    <section class="container" id="user-form">
+      <img src="logo.svg" alt="Logo 3NG" class="logo" />
+      <h1>Sorpresas</h1>
+      <fieldset>
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" placeholder="Tu nombre" autocomplete="name" />
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="tu@email.com" autocomplete="email" />
+      </fieldset>
+      <button id="start-btn">Comenzar</button>
+    </section>
 
-    <div id="quiz" style="display:none;"></div>
-    <div id="result" style="display:none;"></div>
-  </div>
 
+    <div id="progress"><span id="progress-bar"></span></div>
+
+
+    <section class="container" id="quiz"></section>
+
+
+    <section class="container" id="result"></section>
+  </main>
   <script src="quiz.js"></script>
 </body>
 </html>
