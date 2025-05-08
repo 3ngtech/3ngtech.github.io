@@ -101,13 +101,13 @@ const quizData = [
     formData.append("entry.1928113339", nombre);
     formData.append("entry.1167454035", email);
   
-    fetch("https://docs.google.com/forms/d/e/1FAIpQLScF0SmEjABCD1234/formResponse", {
+    fetch("https://docs.google.com/forms/d/e/1FAIpQLSdYtH5gcZQ-w3Hdp2_Dz7OLYW6kAeEZktNoNM6vfsdhEMI-Ug/formResponse", {
       method: "POST",
       mode: "no-cors",
       body: formData,
     })
     .then(() => {
-      console.log("Enviado a Google Form");
+      console.log("Datos enviados a Google Forms");
     })
     .catch((err) => {
       console.error("Error al enviar:", err);
