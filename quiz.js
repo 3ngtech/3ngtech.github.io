@@ -43,7 +43,7 @@ const quizData = [
       alert("Por favor completa tu nombre y correo.");
       return;
     }
-  
+
     document.getElementById("user-form").style.display = "none";
     document.getElementById("quiz").style.display = "block";
     showQuestion();
@@ -83,9 +83,9 @@ const quizData = [
   function showResult() {
     document.getElementById("quiz").style.display = "none";
     const resultDiv = document.getElementById("result");
-    let message = `<h2>¡Gracias por participar, ${userName}!.</h2>`;
+    let message = `<h2>¡Gracias por participar, ${userName}!</h2>`;
     message += `<p>Respuestas correctas: ${correctAnswers} de ${quizData.length}</p>`;
-    if (correctAnswers >= 8) {
+    if (correctAnswers >= 4) {
       const ticket = Math.floor(Math.random() * 100);
       message += `<p>¡Felicidades! Ganaste un número para el sorteo de 3NG: <strong>${ticket}</strong></p>`;
     } else {
@@ -93,10 +93,11 @@ const quizData = [
     }
     resultDiv.innerHTML = message;
     resultDiv.style.display = "block";
+    enviarDatosAGoogleSheets(userName, userEmail);
   }  
 
-  function enviarDatosAGoogleSheets(nombre, email, puntaje, ganador) {
-    fetch("https://script.google.com/macros/s/AKfycbx1axcpzN1Slk5SR3WNA0QvHmJfz4HF-Ogd0Hf8kH4ZMf7SlWwX8FUNTTEb1po9NbCTKQ/exec", {
+  function enviarDatosAGoogleSheets(nombre, email) {
+    fetch("https://script.google.com/macros/s/AKfycbzgDZy-7PU6zimcEPLmfKz4BdI8vrk_98TaSxV5xZ3gTHPwrLkagC6HC1qyZkIWsvnSCg/exec", {
       method: "POST",
       body: JSON.stringify({
         nombre,
