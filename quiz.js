@@ -93,22 +93,25 @@ const quizData = [
     }
     resultDiv.innerHTML = message;
     resultDiv.style.display = "block";
-    enviarDatosAGoogleSheets(userName, userEmail);
+    enviarDatosAGoogleForms(userName, userEmail);
   }  
 
-  function enviarDatosAGoogleSheets(nombre, email) {
-    fetch("https://script.google.com/macros/s/AKfycbzgDZy-7PU6zimcEPLmfKz4BdI8vrk_98TaSxV5xZ3gTHPwrLkagC6HC1qyZkIWsvnSCg/exec", {
+  function enviarDatosAGoogleForms(nombre, email) {
+    const formData = new FormData();
+    formData.append("entry.1928113339", nombre);
+    formData.append("entry.1167454035", email);
+  
+    fetch("https://docs.google.com/forms/d/e/1FAIpQLScF0SmEjABCD1234/formResponse", {
       method: "POST",
-      body: JSON.stringify({
-        nombre,
-        email,
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
+      mode: "no-cors",
+      body: formData,
     })
-    .then(res => res.text())
-    .then(data => console.log("Enviado a Sheets:", data))
-    .catch(err => console.error("Error al enviar:", err));
+    .then(() => {
+      console.log("Enviado a Google Form");
+    })
+    .catch((err) => {
+      console.error("Error al enviar:", err);
+    });
   }
+  
   
