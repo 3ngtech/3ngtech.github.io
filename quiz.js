@@ -60,7 +60,6 @@ function startQuiz() {
 function showQuestion() {
   const q = quizData[currentQuestion];
   let html = `
-    <!-- logo arriba de cada pregunta -->
     <img src="logo.svg" alt="Logo 3NG" class="logo" />
     <div class="question slide-in">
       <h2>${q.question}</h2>
@@ -74,7 +73,9 @@ function showQuestion() {
   });
   html += `
       </div>
+      <!-- Aquí mostramos el mensaje -->
       <button onclick="submitAnswer()">Siguiente</button>
+      <div id="feedback" class="feedback"></div> 
     </div>
   `;
   quizDiv.innerHTML = html;
@@ -97,16 +98,29 @@ function submitAnswer() {
     alert("Selecciona una opción antes de continuar.");
     return;
   }
-  if (parseInt(sel.value) === quizData[currentQuestion].answer) {
-    correctAnswers++;
-  }
-  currentQuestion++;
-  if (currentQuestion < quizData.length) {
-    updateProgress();
-    showQuestion();
-  } else {
-    showResult();
-  }
+
+  const isCorrect = parseInt(sel.value) === quizData[currentQuestion].answer;
+  if (isCorrect) correctAnswers++;
+
+  const feedbackDiv = document.getElementById("feedback");
+  
+  feedbackDiv.className = 'feedback';
+  feedbackDiv.textContent = '';
+
+  
+  feedbackDiv.textContent = isCorrect ? "Correcto ✅" : "Incorrecto ❌";
+  feedbackDiv.classList.add(isCorrect ? "correct" : "incorrect");
+
+  
+  setTimeout(() => {
+    currentQuestion++;
+    if (currentQuestion < quizData.length) {
+      updateProgress();
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }, 1000);
 }
 
 function updateProgress() {
@@ -127,13 +141,7 @@ function showResult() {
       <p>Respuestas correctas: ${correctAnswers} de ${quizData.length}</p>
   `;
 
-  if (correctAnswers >= 4) {
-    const ticket = Math.floor(Math.random() * 100);
-    html += `<p>¡Felicidades! Ganaste un número para el sorteo: <strong>${ticket}</strong></p>`;
-  } else {
-    html += `<p>No alcanzaste el mínimo para el sorteo :( ¡Intenta de nuevo!</p>`;
-  }
-
+  html += `<p>¡Felicidades! Ya estás participando para el sorteo 😎</p>`;
 
   html += `
     </div>
