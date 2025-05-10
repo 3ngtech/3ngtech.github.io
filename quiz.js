@@ -5,18 +5,18 @@ const quizData = [
       answer: 1
     },
     {
-      question: "2 - Pedirle que 'actúe' como algo en el prompt (un profesional de algo) no afecta realmente al desempeño de la IA.",
+      question: "2 - Pedirle que 'actúe' como algo en el prompt (un profesional de un área específica) no afecta realmente al desempeño de la IA.",
       options: ["Verdadero", "Falso"],
       answer: 1
     },
     {
       question: "3NG - ¿Qué se le debe agregar al prompt para que la IA evite malentendidos?",
-      options: ["Ornamentos de navidad", "Amenazas", "Especificaciones técnicas", "Advertencias sobre desinformación"],
+      options: ["Decoración navideña", "Amenazas", "Cuestiones personales", "Advertencias sobre desinformación"],
       answer: 3
     },
     {
       question: "4 - ¿Cuáles son los principales componentes de un buen prompt?",
-      options: ["Meta, formato, advertencias y contexto", "Modales, tecnisismos, requisitos y paciencia", "Pan, carne, queso y pan", "Descripciones, elementos, redundancias y objetivos"],
+      options: ["Meta, formato, advertencias y contexto", "Modales, tecnisismos, requisitos y paciencia", "Tres de carne, dos de choclo, tres de choclo", "Descripciones, elementos, redundancias y objetivos"],
       answer: 0
     },
     {
@@ -26,7 +26,17 @@ const quizData = [
     },
     {
       question: "Bonus - ¿Cuál te pareció el mejor stand del evento?",
-      options: ["3NG", "La primer opción", "Estás flasheando", "Volvé a la primera"],
+      options: ["3NG", "La primera opción", "La primera dije", "Dale loco"],
+      answer: 0
+    },
+    {
+      question: "Bonus 2 - ¿A qué charla voy a ir a las 17?",
+      options: ["A la del goat Lucas Flores Lucero", "Habían charlas?", "Vine por la birra", "Y la birra?"],
+      answer: 0
+    },
+    {
+      question: "Bonus 3NG - ¿A qué charla voy a ir a las 18:45?",
+      options: ["A la del gigachad Lucas Trubiano", "Pensé que había terminado", "Por favor que no hayan más preguntas", "Birra"],
       answer: 0
     }
   ];
@@ -141,7 +151,11 @@ function showResult() {
       <p>Respuestas correctas: ${correctAnswers} de ${quizData.length}</p>
   `;
 
-  html += `<p>¡Felicidades! Ya estás participando para el sorteo 😎</p>`;
+  if (correctAnswers <= 3) {
+    html += `<p>Bueno... De todas formas participas del sorteo! 😎</p>`
+  } else {
+    html += `<p>¡Felicidades! Ya estás participando para el sorteo 😎</p>`;
+  }
 
   html += `
     </div>
